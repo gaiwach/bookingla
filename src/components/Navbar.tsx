@@ -1,17 +1,26 @@
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Globe } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-
-const navLinks = [
-  { to: "/", label: "Home" },
-  { to: "/rooms", label: "Rooms" },
-  { to: "/contact", label: "Contact" },
-];
+import { useLanguage } from "@/i18n/LanguageContext";
+import { languageNames, type Language } from "@/i18n/translations";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
+  const { t, language, setLanguage } = useLanguage();
+
+  const navLinks = [
+    { to: "/", label: t("nav.home") },
+    { to: "/rooms", label: t("nav.rooms") },
+    { to: "/contact", label: t("nav.contact") },
+  ];
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-md border-b border-border">
@@ -33,8 +42,29 @@ const Navbar = () => {
               {l.label}
             </Link>
           ))}
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="gap-1.5">
+                <Globe size={16} />
+                {languageNames[language]}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {(Object.keys(languageNames) as Language[]).map((lang) => (
+                <DropdownMenuItem
+                  key={lang}
+                  onClick={() => setLanguage(lang)}
+                  className={language === lang ? "bg-accent" : ""}
+                >
+                  {languageNames[lang]}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <Button asChild size="sm">
-            <Link to="/rooms">Book Now</Link>
+            <Link to="/rooms">{t("nav.bookNow")}</Link>
           </Button>
         </div>
 
@@ -57,8 +87,20 @@ const Navbar = () => {
               {l.label}
             </Link>
           ))}
+          <div className="flex gap-2">
+            {(Object.keys(languageNames) as Language[]).map((lang) => (
+              <Button
+                key={lang}
+                variant={language === lang ? "default" : "outline"}
+                size="sm"
+                onClick={() => setLanguage(lang)}
+              >
+                {languageNames[lang]}
+              </Button>
+            ))}
+          </div>
           <Button asChild size="sm" className="w-full">
-            <Link to="/rooms" onClick={() => setOpen(false)}>Book Now</Link>
+            <Link to="/rooms" onClick={() => setOpen(false)}>{t("nav.bookNow")}</Link>
           </Button>
         </div>
       )}

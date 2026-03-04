@@ -4,30 +4,32 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { toast } from "sonner";
+import { useLanguage } from "@/i18n/LanguageContext";
 
 const Contact = () => {
+  const { t } = useLanguage();
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Message sent! We'll get back to you shortly.");
+    toast.success(t("contact.success"));
   };
 
   return (
     <div className="min-h-screen pt-24 pb-16">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <p className="text-primary tracking-[0.2em] uppercase text-sm font-medium mb-2">Get in Touch</p>
-          <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground">Contact Us</h1>
+          <p className="text-primary tracking-[0.2em] uppercase text-sm font-medium mb-2">{t("contact.subtitle")}</p>
+          <h1 className="font-display text-4xl md:text-5xl font-bold text-foreground">{t("contact.title")}</h1>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          {/* Info & Map */}
           <div className="space-y-8">
             <div className="space-y-4">
               {[
-                { icon: MapPin, label: "Address", value: "123 Paradise Beach Road, Phuket, Thailand 83100" },
-                { icon: Phone, label: "Phone", value: "+66 123 456 789" },
-                { icon: Mail, label: "Email", value: "info@grandhaven.com" },
-                { icon: Clock, label: "Front Desk", value: "24/7 Available" },
+                { icon: MapPin, label: t("contact.address"), value: "123 Paradise Beach Road, Phuket, Thailand 83100" },
+                { icon: Phone, label: t("contact.phone"), value: "+66 123 456 789" },
+                { icon: Mail, label: t("contact.email"), value: "info@grandhaven.com" },
+                { icon: Clock, label: t("contact.frontDesk"), value: t("contact.available") },
               ].map(({ icon: Icon, label, value }) => (
                 <div key={label} className="flex items-start gap-3">
                   <div className="gold-gradient rounded-lg p-2">
@@ -53,27 +55,26 @@ const Contact = () => {
             </div>
           </div>
 
-          {/* Form */}
           <div className="bg-card rounded-xl shadow-luxury p-8">
-            <h2 className="font-display text-2xl font-bold text-foreground mb-6">Send a Message</h2>
+            <h2 className="font-display text-2xl font-bold text-foreground mb-6">{t("contact.sendMessage")}</h2>
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <Label htmlFor="contactName">Name</Label>
-                <Input id="contactName" placeholder="Your name" required />
+                <Label htmlFor="contactName">{t("contact.name")}</Label>
+                <Input id="contactName" placeholder={t("contact.name")} required />
               </div>
               <div>
-                <Label htmlFor="contactEmail">Email</Label>
+                <Label htmlFor="contactEmail">{t("contact.email")}</Label>
                 <Input id="contactEmail" type="email" placeholder="your@email.com" required />
               </div>
               <div>
-                <Label htmlFor="subject">Subject</Label>
-                <Input id="subject" placeholder="How can we help?" />
+                <Label htmlFor="subject">{t("contact.subject")}</Label>
+                <Input id="subject" placeholder={t("contact.subject")} />
               </div>
               <div>
-                <Label htmlFor="message">Message</Label>
-                <Textarea id="message" placeholder="Tell us more..." rows={5} required />
+                <Label htmlFor="message">{t("contact.message")}</Label>
+                <Textarea id="message" placeholder={t("contact.message")} rows={5} required />
               </div>
-              <Button type="submit" className="w-full gold-gradient border-0">Send Message</Button>
+              <Button type="submit" className="w-full gold-gradient border-0">{t("contact.send")}</Button>
             </form>
           </div>
         </div>
